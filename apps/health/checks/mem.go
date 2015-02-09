@@ -1,8 +1,11 @@
-package goshin
+package checks
 
-import "fmt"
-import "os/exec"
-import linuxproc "github.com/c9s/goprocinfo/linux"
+import (
+	"fmt"
+	"github.com/MarshalMediaGroup/goshin"
+	linuxproc "github.com/c9s/goprocinfo/linux"
+	"os/exec"
+)
 
 type MemoryUsage struct {
 	total, free, buffers, cache, swap uint64
@@ -25,9 +28,9 @@ func (m *MemoryUsage) Ranking() string {
 	return fmt.Sprint("used\n\n", s)
 }
 
-func (m *MemoryUsage) Collect(queue chan *Metric) {
+func (m *MemoryUsage) Collect(queue chan *goshin.Metric) {
 
-	metric := NewMetric()
+	metric := goshin.NewMetric()
 
 	metric.Service = "memory"
 	metric.Value = m.Usage()

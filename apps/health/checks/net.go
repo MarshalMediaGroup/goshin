@@ -1,10 +1,11 @@
-package goshin
+package checks
 
 import (
 	"fmt"
+	"github.com/MarshalMediaGroup/goshin"
+	linuxproc "github.com/c9s/goprocinfo/linux"
 	"time"
 )
-import linuxproc "github.com/c9s/goprocinfo/linux"
 
 type NetStats struct {
 	last, actual         map[string]linuxproc.NetworkStat
@@ -35,8 +36,8 @@ func (n *NetStats) Store() {
 
 }
 
-func buildMetric(iface string, name string, actual uint64, last uint64, interval float64) *Metric {
-	metric := NewMetric()
+func buildMetric(iface string, name string, actual uint64, last uint64, interval float64) *goshin.Metric {
+	metric := goshin.NewMetric()
 	metric.Service = fmt.Sprintf("%s %s", iface, name)
 
 	diff := actual - last
@@ -68,7 +69,7 @@ func (n *NetStats) candidateIfaces() []string {
 	return keys
 }
 
-func (n *NetStats) Collect(queue chan *Metric) {
+func (n *NetStats) Collect(queue chan *goshin.Metric) {
 	n.Store()
 
 	// first run or

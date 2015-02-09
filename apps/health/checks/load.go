@@ -1,7 +1,10 @@
-package goshin
+package checks
 
-import "fmt"
-import linuxproc "github.com/c9s/goprocinfo/linux"
+import (
+	"fmt"
+	"github.com/MarshalMediaGroup/goshin"
+	linuxproc "github.com/pariviere/goprocinfo/linux"
+)
 
 type LoadAverage struct {
 	last1m, last5m, last15m float64
@@ -22,9 +25,9 @@ func (l *LoadAverage) Ranking() string {
 	return fmt.Sprintf("1-minute load average/core is %f", l.last1m)
 }
 
-func (l *LoadAverage) Collect(queue chan *Metric) {
+func (l *LoadAverage) Collect(queue chan *goshin.Metric) {
 
-	metric := NewMetric()
+	metric := goshin.NewMetric()
 
 	metric.Service = "load"
 

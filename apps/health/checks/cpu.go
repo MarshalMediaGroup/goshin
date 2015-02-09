@@ -1,10 +1,11 @@
-package goshin
+package checks
 
 import (
 	"fmt"
+	"github.com/MarshalMediaGroup/goshin"
+	linuxproc "github.com/c9s/goprocinfo/linux"
 	"os/exec"
 )
-import linuxproc "github.com/c9s/goprocinfo/linux"
 
 type CPUTime struct {
 	last, actual linuxproc.CPUStat
@@ -39,7 +40,7 @@ func (c *CPUTime) Ranking() string {
 	return fmt.Sprint("user+nice+system\n\n", s)
 }
 
-func (c *CPUTime) Collect(queue chan *Metric) {
+func (c *CPUTime) Collect(queue chan *goshin.Metric) {
 
 	c.Store()
 
@@ -48,7 +49,7 @@ func (c *CPUTime) Collect(queue chan *Metric) {
 		// so no metric to send
 		return
 	}
-	metric := NewMetric()
+	metric := goshin.NewMetric()
 
 	metric.Service = "cpu"
 	metric.Value = c.Usage()
