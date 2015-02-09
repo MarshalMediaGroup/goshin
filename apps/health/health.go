@@ -23,6 +23,7 @@ func New() *Health {
 	app.AddCheck("memory", checks.NewMemoryUsage())
 	app.AddCheck("load", checks.NewLoadAverage())
 	app.AddCheck("net", checks.NewNetStats(app.Ifaces, app.IgnoreIfaces))
+	app.AddCheck("iostat", checks.NewIOStat(app.Interval))
 	return app
 }
 
